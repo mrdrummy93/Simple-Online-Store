@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export default styled.div`
   width: 20px;
@@ -7,4 +7,4 @@ export default styled.div`
   cursor: pointer;
   position: relative;
   top: 4px;
-`
+`;

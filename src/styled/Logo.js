@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 import logo from '../assets/logo.svg';
 
 export default styled.div`
@@ -8,4 +8,4 @@ export default styled.div`
   background-size: cover;
   position: relative;
   right: 85px;
-`
+`;

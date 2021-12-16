@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 class CartImage extends React.Component {
   render() {
@@ -6,7 +6,7 @@ class CartImage extends React.Component {
       <div>
         <img src="../assets/addToCartLogo.svg" alt="add-to-cart-logo" />
       </div>
-    )
+    );
   }
 }
 

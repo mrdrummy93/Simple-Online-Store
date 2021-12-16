@@ -1,79 +1,71 @@
-import React from "react";
-import Button from "../styled/Button";
-import MenuWrapper from "../styled/MenuWrapper";
-import HeaderWrapper from "../styled/HeaderWrapper";
-import Logo from "../styled/Logo";
-import Select from "../styled/Select";
-import Option from "../styled/Option";
-import CartLogo from "../styled/CartLogo";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import HeaderWrapper from '../styled/HeaderWrapper';
+import Logo from '../styled/Logo';
+import CartLogo from '../styled/CartLogo';
 import emptyCartLogo from '../assets/emptyCart.svg';
-import CurrencyAndCartWrapper from "../styled/CurrencyAndCartWrapper";
-import MiniCart from "./MiniCart";
-
+import CurrencyAndCartWrapper from '../styled/CurrencyAndCartWrapper';
+import MiniCart from './MiniCart';
+import Currency from './Currency';
+import HeaderMenuWrapper from './HeaderMenuWrapper';
+import { LIST_ROUTE_NAME } from '../routeNames';
 
 class Header extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      value: '$ USD',
-      showMiniCart: false
+      showMiniCart: false,
     };
-    this.handleChange = this.handleChange.bind(this);
     this.handleShow = this.handleShow.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({ value: event.target.value });
-  }
-
   handleShow() {
-    this.setState({ showMiniCart: !this.state.showMiniCart });
+    const { showMiniCart } = this.state;
+    this.setState({ showMiniCart: !showMiniCart });
   }
 
   render() {
+    const { showMiniCart } = this.state;
+    const {
+      categories,
+    } = this.props;
 
-    const miniCart = this.state.showMiniCart ? (
+    const miniCart = showMiniCart ? (
       <MiniCart />
     ) : null;
 
     return (
-      <>
-        <HeaderWrapper>
-          <MenuWrapper>
-            <Button>WOMEN</Button>
-            <Button>MEN</Button>
-            <Button>KIDS</Button>
-          </MenuWrapper>
-          <a href="/list">
-            <Logo />
-          </a>
-          <CurrencyAndCartWrapper>
-            <Select value={this.state.value} onChange={this.handleChange}>
-              <Option value="$ USD">$ USD</Option>
-              <Option value="€ EUR">€ EUR</Option>
-              <Option value="¥ JPY">¥ JPY</Option>
-            </Select>
-
-            <div id='cart-root'></div>
-            <CartLogo>
-              <button
-                style={{
-                  backgroundImage: `url(${emptyCartLogo})`,
-                  backgroundSize: 'cover',
-                  width: '20px',
-                  height: '20px',
-                  border: 'none',
-                  backgroundColor: 'white',
-                  cursor: 'pointer'
-                }}
-                onClick={this.handleShow}>
-              </button>
-              {miniCart}
-            </CartLogo>
-          </CurrencyAndCartWrapper>
-        </HeaderWrapper>
-      </>
-    )
+      <HeaderWrapper>
+        { !categories.length ? null : (
+          <HeaderMenuWrapper
+            categories={categories}
+          />
+        ) }
+        <NavLink to={LIST_ROUTE_NAME}>
+          <Logo />
+        </NavLink>
+        <CurrencyAndCartWrapper>
+          <Currency />
+          <div id="cart-root" />
+          <CartLogo>
+            <div
+              style={{
+                backgroundImage: `url(${emptyCartLogo})`,
+                backgroundSize: 'cover',
+                width: '20px',
+                height: '20px',
+                border: 'none',
+                backgroundColor: 'white',
+                cursor: 'pointer',
+              }}
+              role="none"
+              onClick={this.handleShow}
+            />
+            {miniCart}
+          </CartLogo>
+        </CurrencyAndCartWrapper>
+      </HeaderWrapper>
+    );
   }
 }
 

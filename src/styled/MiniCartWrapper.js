@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export default styled.div`
   position: absolute;
@@ -7,4 +7,4 @@ export default styled.div`
   width: 325px;
   right: 0px;
   background-color: white;
-`
+`;

@@ -1,9 +1,10 @@
-import styled from "styled-components";
-import CartImage from "../components/CartImage";
+import styled from 'styled-components';
+import AddToCartButton from './AddToCartButton';
 
 export default styled.div`
   padding: 20px;
   marfin-bottom: 85px;
+  position: relative;
 
   &:hover {
     box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
@@ -11,18 +12,7 @@ export default styled.div`
     position: relative;
   }
 
-  &:hover::after {
-    display: block;
+  &:hover > ${AddToCartButton} {
+    display: inline;
   }
-
-  &::after {
-    content: '${CartImage}';
-    width: 50px;
-    height: 50px;
-    color: red;
-    display: none;
-    position: absolute;
-    right: 50px;
-    bottom: 98px;
-  }
-`
+`;

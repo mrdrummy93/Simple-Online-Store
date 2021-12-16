@@ -1,45 +1,64 @@
-import React from "react";
-import MiniCartWrapper from "../styled/MiniCartWrapper";
-import CartItemComponent from "./CartItemComponent";
+import React from 'react';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import MiniCartWrapper from '../styled/MiniCartWrapper';
+import CartItemComponent from './CartItemComponent';
 
 class MiniCart extends React.Component {
-  constructor(props) {
-    super(props);
-    this.el = document.createElement('div');
-  }
-
   render() {
+    const { cart } = this.props;
+
     return (
       <MiniCartWrapper>
-        <p><strong>My bag.</strong> 1 item</p>
+        <p>
+          <strong>My bag.</strong>
+          {' '}
+          {cart.length}
+          {' '}
+          items
+        </p>
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-          <CartItemComponent />
+          {cart.map(() => <CartItemComponent />)}
         </div>
         <div style={{
           display: 'flex',
-          justifyContent: 'space-around'
-        }}>
-          <button style={{
-            width: '140px',
-            height: '45px',
-            backgroundColor: 'white',
-            border: '1px solid black'
-          }}>
-            VIEW BAG
-          </button>
-          <button style={{
-            width: '140px',
-            height: '45px',
-            backgroundColor: '#5ECE7B',
-            color: 'white',
-            border: 'none'
-          }}>
+          justifyContent: 'space-around',
+        }}
+        >
+          <NavLink to="/cart">
+            <button
+              style={{
+                width: '140px',
+                height: '45px',
+                backgroundColor: 'white',
+                border: '1px solid black',
+                cursor: 'pointer',
+              }}
+              type="button"
+            >
+              VIEW BAG
+            </button>
+          </NavLink>
+          <button
+            style={{
+              width: '140px',
+              height: '45px',
+              backgroundColor: '#5ECE7B',
+              color: 'white',
+              border: 'none',
+            }}
+            type="button"
+          >
             CHECKOUT
           </button>
         </div>
       </MiniCartWrapper>
-    )
+    );
   }
 }
 
-export default MiniCart;
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+});
+
+export default connect(mapStateToProps)(MiniCart);

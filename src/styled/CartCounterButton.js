@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+// import React from 'react';
+import styled from 'styled-components';
 
 export default styled.button`
 border: 1px solid black;
@@ -17,13 +17,12 @@ padding: 0px 6px;
   background-color: black;
   color: white;
 }
-`
+`;
 
-export const Button = (props) => {
+/* export var Button = function (props) {
   return (
-    <button onClick={() =>
-      props.sign === '+' ? props.updateCount(1) : props.updateCount(-1)}>
-        {props.sign}
+    <button onClick={() => (props.sign === '+' ? props.updateCount(1) : props.updateCount(-1))}>
+      {props.sign}
     </button>
-  )
-}
+  );
+}; */

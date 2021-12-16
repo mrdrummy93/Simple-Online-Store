@@ -7,7 +7,7 @@ export default styled.button`
   font-size: 16px;
   line-height: 120%;
   text-align: center;
-  color: #5ECE7B;
+  color: black;
   border: none;
   background: white;
   padding-bottom: 30px;
@@ -17,4 +17,6 @@ export default styled.button`
     cursor: pointer;
     border-bottom: 2px solid #5ECE7B; 
   }
-`
+`;
+
+/* #5ECE7B */
