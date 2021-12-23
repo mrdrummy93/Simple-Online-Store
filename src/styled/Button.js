@@ -12,6 +12,7 @@ export default styled.button`
   background: white;
   padding-bottom: 30px;
   padding-right: 30px;
+  text-transform: uppercase;
 
   &:hover {
     cursor: pointer;

@@ -38,5 +38,6 @@ module.exports = {
     'import/prefer-default-export': 0,
     'jsx-a11y/click-events-have-key-events': 0,
     'default-param-last': 0,
+    'max-len': 0,
   },
 };

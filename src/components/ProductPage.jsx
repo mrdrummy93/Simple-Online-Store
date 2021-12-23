@@ -1,52 +1,165 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import AddToCartButtonInProduct from '../styled/AddToCartButtonInProduct';
 import DescriptionWrapper from '../styled/DescriptionWrapper';
 import ImagesWrapper from '../styled/ImagesWrapper';
-import ProductImg from '../styled/ProductImg';
-import ProductMainImg from '../styled/ProductMainImg';
+import ProductPageMainImgWrapper from '../styled/ProductPageMainImgWrapper';
 import ProductPageWrapper from '../styled/ProductPageWrapper';
 import SizeProductButton from '../styled/SizeProductButton';
+import { CURRENCY_SIGNS } from '../constants';
+import { getDefaultAttributesValues, getUniqId } from '../helpers';
+import ProductPageMiniImages from '../styled/ProductPageMiniImages';
+import ProductPageMainImg from '../styled/ProductPageMainImg';
+import { addToCart } from '../store/actions';
+import { PRODUCT_REQUEST } from '../queries/queries';
+import { client } from '../queries/client';
 
 class ProductPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  componentDidMount() {
+    this.queryProductId();
+  }
+
+  queryProductId = () => {
+    const {
+      match: {
+        params: {
+          productId,
+        },
+      },
+    } = this.props;
+    client.query({
+      query: PRODUCT_REQUEST,
+      variables: { productId },
+    }).then(({ data: { product } }) => {
+      this.setState({
+        ...product,
+        activeAttributes: getDefaultAttributesValues(product),
+      });
+      // eslint-disable-next-line no-console
+    }).catch((e) => console.log(e));
+  }
+
+  handleClick = (id, val) => () => {
+    this.setState((prevState) => ({
+      activeAttributes: {
+        ...prevState.activeAttributes,
+        [id]: val,
+      },
+    }));
+  }
+
+  addToCartHandler = () => {
+    const { addProductToCart } = this.props;
+    addProductToCart({
+      ...this.state,
+      uniqId: getUniqId(this.state),
+    });
+  }
+
   render() {
+    const {
+      currency,
+    } = this.props;
+    const {
+      prices,
+      gallery,
+      name,
+      attributes,
+      description,
+      activeAttributes,
+    } = this.state;
+    if (!name) return null;
+    const { amount } = prices.find((price) => price.currency === currency);
     return (
       <ProductPageWrapper>
         <ImagesWrapper>
-          <ProductImg />
-          <ProductImg />
-          <ProductImg />
+          {gallery.map((image) => (
+            <ProductPageMiniImages
+              src={image}
+              key={image}
+              alt="product"
+            />
+          ))}
         </ImagesWrapper>
-        <ProductMainImg />
+        <ProductPageMainImgWrapper>
+          <ProductPageMainImg
+            src={gallery[0]}
+            alt="product"
+          />
+        </ProductPageMainImgWrapper>
         <DescriptionWrapper>
           <h1>
-            Apollo
-            <br />
-            {' '}
-            Running Short
+            {name}
           </h1>
-          <div>
-            <h4>SIZE:</h4>
-            <div>
-              <SizeProductButton>XS</SizeProductButton>
-              <SizeProductButton>S</SizeProductButton>
-              <SizeProductButton>M</SizeProductButton>
-              <SizeProductButton>L</SizeProductButton>
+          {attributes.map((attribute) => (
+            <div key={attribute.id}>
+              <h4>
+                {attribute.name}
+                :
+              </h4>
+              <div>
+                {attribute.items.map((attributeItem) => {
+                  const isCurrentAttributeActive = activeAttributes[attribute.id] === attributeItem.value;
+                  return (attribute.id === 'Color'
+                    ? (
+                      <SizeProductButton
+                        key={attributeItem.id}
+                        style={{
+                          backgroundColor: attributeItem.value,
+                          outline: isCurrentAttributeActive ? '3px solid black' : '1px solid black',
+                          opacity: isCurrentAttributeActive ? '1' : '0.5',
+                        }}
+                        onClick={this.handleClick(attribute.id, attributeItem.value)}
+                      />
+                    )
+                    : (
+                      <SizeProductButton
+                        key={attributeItem.id}
+                        style={{
+                          backgroundColor: isCurrentAttributeActive ? 'black' : 'white',
+                          color: !isCurrentAttributeActive ? 'black' : 'white',
+                        }}
+                        onClick={this.handleClick(attribute.id, attributeItem.value)}
+                      >
+                        {attributeItem.value}
+                      </SizeProductButton>
+                    ));
+                })}
+              </div>
             </div>
-          </div>
+          ))}
           <div>
             <h4>PRICE:</h4>
-            <p><strong>$50.00</strong></p>
+            <p><strong>{`${CURRENCY_SIGNS[currency]} ${amount}`}</strong></p>
           </div>
-          <AddToCartButtonInProduct>ADD TO CART</AddToCartButtonInProduct>
-          <p style={{ maxWidth: '300px' }}>
-            Find stunning womens cocktail dresses and party dresses.
-            Stand out in lace and metallic cocktail dresses and party
-            dresses from all your favorite brands.
-          </p>
+          <AddToCartButtonInProduct
+            onClick={this.addToCartHandler}
+          >
+            ADD TO CART
+          </AddToCartButtonInProduct>
+          {/* eslint-disable-next-line react/no-danger */}
+          <div dangerouslySetInnerHTML={{
+            __html: description,
+          }}
+          />
         </DescriptionWrapper>
       </ProductPageWrapper>
     );
   }
 }
 
-export default ProductPage;
+const mapStateToProps = (state) => ({
+  currency: state.data.currency,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  addProductToCart: (product) => dispatch(addToCart(product)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProductPage));

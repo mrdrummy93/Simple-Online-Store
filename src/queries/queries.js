@@ -16,9 +16,20 @@ query ProductsQuery($category: CategoryInput) {
       id
       inStock
       gallery
+      description
       prices {
         currency
         amount
+      }
+      attributes {
+        id
+        name
+        type
+        items {
+          displayValue
+          value
+          id
+        }
       }
     }
   }
@@ -29,4 +40,30 @@ export const CURRENCIES_REQUEST = gql`
   query CurrenciesQuery {
     currencies
   }
+`;
+
+export const PRODUCT_REQUEST = gql`
+  query ProductsQuery($productId: String!) {
+    product(id: $productId) {
+        name
+        id
+        inStock
+        gallery
+        description
+        prices {
+          currency
+          amount
+        }
+        attributes {
+          id
+          name
+          type
+          items {
+            displayValue
+            value
+            id
+          }
+        }
+      }
+    }
 `;

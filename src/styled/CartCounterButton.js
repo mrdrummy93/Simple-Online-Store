@@ -11,6 +11,7 @@ font-style: normal;
 font-weight: 300;
 line-height: 35px;
 padding: 0px 6px;
+font-size: 35px;
 
 &:hover {
   cursor: pointer;
@@ -18,11 +19,3 @@ padding: 0px 6px;
   color: white;
 }
 `;
-
-/* export var Button = function (props) {
-  return (
-    <button onClick={() => (props.sign === '+' ? props.updateCount(1) : props.updateCount(-1))}>
-      {props.sign}
-    </button>
-  );
-}; */

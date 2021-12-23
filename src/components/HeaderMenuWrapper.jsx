@@ -28,7 +28,6 @@ class HeaderMenuWrapper extends Component {
           >
             <Button
               style={{
-                textTransform: 'uppercase',
                 color: currentCategory === category.name ? '#5ECE7B' : 'black',
               }}
             >

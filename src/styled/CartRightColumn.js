@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 export default styled.div`
   display: flex;
+  width: 200px;
+  flexd-direction: row;
   justify-content: space-between;
-  flex-direction: column;
-  margin-right: 30px;
+  align-items: center;
 `;

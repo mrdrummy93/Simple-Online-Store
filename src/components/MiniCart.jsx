@@ -18,7 +18,16 @@ class MiniCart extends React.Component {
           items
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-          {cart.map(() => <CartItemComponent />)}
+          {cart.map((product, index) => (
+            <>
+              <CartItemComponent key={product.uniqId} index={index} product={product} />
+              <hr style={{
+                color: 'black',
+                width: '330px',
+              }}
+              />
+            </>
+          ))}
         </div>
         <div style={{
           display: 'flex',

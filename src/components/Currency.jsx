@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Select from '../styled/Select';
 import Option from '../styled/Option';
-import { CHANGE_CURRENCY } from '../store/actionsType';
 import { client } from '../queries/client';
 import { CURRENCIES_REQUEST } from '../queries/queries';
 import { CURRENCY_SIGNS } from '../constants';
+import { changeCurrency } from '../store/actions';
 
 class Currency extends React.Component {
   constructor(props) {
@@ -26,9 +26,9 @@ class Currency extends React.Component {
   }
 
   handleChange(event) {
-    const { changeCurrency } = this.props;
+    const { handleChangeCurrency } = this.props;
     const { value } = event.target;
-    changeCurrency(value);
+    handleChangeCurrency(value);
   }
 
   render() {
@@ -52,11 +52,11 @@ class Currency extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  currency: state.currency,
+  currency: state.data.currency,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeCurrency: (currency) => dispatch({ type: CHANGE_CURRENCY, payload: { currency } }),
+  handleChangeCurrency: (currency) => dispatch(changeCurrency(currency)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Currency);

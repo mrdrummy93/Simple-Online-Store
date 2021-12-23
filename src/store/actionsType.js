@@ -1,5 +1,3 @@
 export const CHANGE_CURRENCY = 'CHANGE_CURRENCY';
 export const ADD_TO_CART = 'ADD_TO_CART';
-export const DELETE_FROM_CART = 'DELETE_FROM_CART';
-export const SAVE_CATEGORY = 'SAVE_CATEGORY';
-export const GET_PRODUCTS = 'GET_PRODUCTS';
+export const CHANGE_COUNT = 'CHANGE_COUNT';

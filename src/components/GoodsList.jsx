@@ -5,6 +5,7 @@ import ContentWrapper from '../styled/ContentWrapper';
 import ProductComponent from './ProductComponent';
 import { client } from '../queries/client';
 import { PRODUCTS_REQUEST } from '../queries/queries';
+import CategoryHeading from '../styled/CategoryHeading';
 
 class GoodsList extends React.Component {
   constructor(props) {
@@ -60,21 +61,12 @@ class GoodsList extends React.Component {
     const { list } = this.state;
     return (
       <>
-        <h1 style={{
-          paddingBottom: '70px',
-          marginTop: '40px',
-          fontStyle: 'normal',
-          fontWeight: 'normal',
-          fontSize: '42px',
-          lineHeight: '160%',
-          textTransform: 'uppercase',
-        }}
-        >
+        <CategoryHeading>
           {category || 'Choose category'}
-        </h1>
+        </CategoryHeading>
         <ContentWrapper>
-          {list.map((item) => (
-            <ProductComponent item={item} key={item.id} />
+          {list.map((product) => (
+            <ProductComponent product={product} key={product.id} />
           ))}
         </ContentWrapper>
       </>

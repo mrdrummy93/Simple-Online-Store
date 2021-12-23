@@ -3,12 +3,12 @@ import { NavLink } from 'react-router-dom';
 import HeaderWrapper from '../styled/HeaderWrapper';
 import Logo from '../styled/Logo';
 import CartLogo from '../styled/CartLogo';
-import emptyCartLogo from '../assets/emptyCart.svg';
 import CurrencyAndCartWrapper from '../styled/CurrencyAndCartWrapper';
 import MiniCart from './MiniCart';
 import Currency from './Currency';
 import HeaderMenuWrapper from './HeaderMenuWrapper';
 import { LIST_ROUTE_NAME } from '../routeNames';
+import CartLogoWrapper from '../styled/CartLogoWrapper';
 
 class Header extends React.Component {
   constructor(props) {
@@ -36,33 +36,24 @@ class Header extends React.Component {
 
     return (
       <HeaderWrapper>
-        { !categories.length ? null : (
+        {!categories.length ? null : (
           <HeaderMenuWrapper
             categories={categories}
           />
-        ) }
+        )}
         <NavLink to={LIST_ROUTE_NAME}>
           <Logo />
         </NavLink>
         <CurrencyAndCartWrapper>
           <Currency />
           <div id="cart-root" />
-          <CartLogo>
-            <div
-              style={{
-                backgroundImage: `url(${emptyCartLogo})`,
-                backgroundSize: 'cover',
-                width: '20px',
-                height: '20px',
-                border: 'none',
-                backgroundColor: 'white',
-                cursor: 'pointer',
-              }}
+          <CartLogoWrapper>
+            <CartLogo
               role="none"
               onClick={this.handleShow}
             />
             {miniCart}
-          </CartLogo>
+          </CartLogoWrapper>
         </CurrencyAndCartWrapper>
       </HeaderWrapper>
     );

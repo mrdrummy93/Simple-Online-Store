@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export default styled.div`
+  height: 180px;
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
-  margin-right: 30px;
+  justify-content: space-between;
 `;
