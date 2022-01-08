@@ -1,5 +1,5 @@
 import {
-  ADD_TO_CART, CHANGE_COUNT, CHANGE_CURRENCY,
+  ADD_TO_CART, CHANGE_COUNT, CHANGE_CURRENCY, CHANGE_ACTIVE_ATTRIBUTES,
 } from './actionsType';
 
 export const changeCurrency = (currency) => ({
@@ -15,4 +15,9 @@ export const addToCart = (product) => ({
 export const changeCount = (index, value) => ({
   type: CHANGE_COUNT,
   payload: { index, value },
+});
+
+export const changeActiveAttributes = (index, activeAttributes) => ({
+  type: CHANGE_ACTIVE_ATTRIBUTES,
+  payload: { index, activeAttributes },
 });

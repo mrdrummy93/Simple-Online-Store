@@ -3,11 +3,21 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import MiniCartWrapper from '../styled/MiniCartWrapper';
 import CartItemComponent from './CartItemComponent';
+import { CURRENCY_SIGNS } from '../constants';
+import MiniCartBodyWrapper from '../styled/MiniCartBodyWrapper';
+import HorizontalLine from '../styled/HorizontalLine';
+import MiniCartTotalsWrapper from '../styled/MiniCartTotalsWrapper';
+import MiniCartFooterWrapper from '../styled/MiniCartFooterWrapper';
+import MiniCartCheckoutButton from '../styled/MiniCartCheckoutButton';
+import MiniCartToCartButton from '../styled/MiniCartToCartButton';
 
 class MiniCart extends React.Component {
   render() {
-    const { cart } = this.props;
-
+    const { cart, currency, toggleShow } = this.props;
+    const total = cart.reduce((acc, product) => {
+      const { amount } = product.prices.find((price) => price.currency === currency);
+      return acc + amount * product.count;
+    }, 0);
     return (
       <MiniCartWrapper>
         <p>
@@ -17,50 +27,33 @@ class MiniCart extends React.Component {
           {' '}
           items
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <MiniCartBodyWrapper>
           {cart.map((product, index) => (
             <>
               <CartItemComponent key={product.uniqId} index={index} product={product} />
-              <hr style={{
-                color: 'black',
-                width: '330px',
-              }}
-              />
+              <HorizontalLine />
             </>
           ))}
-        </div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-around',
-        }}
-        >
+        </MiniCartBodyWrapper>
+        <MiniCartTotalsWrapper>
+          <h2>Total</h2>
+          <h2>{` ${CURRENCY_SIGNS[currency]} ${total.toFixed(2)}`}</h2>
+        </MiniCartTotalsWrapper>
+        <MiniCartFooterWrapper>
           <NavLink to="/cart">
-            <button
-              style={{
-                width: '140px',
-                height: '45px',
-                backgroundColor: 'white',
-                border: '1px solid black',
-                cursor: 'pointer',
-              }}
+            <MiniCartToCartButton
               type="button"
+              onClick={toggleShow}
             >
               VIEW BAG
-            </button>
+            </MiniCartToCartButton>
           </NavLink>
-          <button
-            style={{
-              width: '140px',
-              height: '45px',
-              backgroundColor: '#5ECE7B',
-              color: 'white',
-              border: 'none',
-            }}
+          <MiniCartCheckoutButton
             type="button"
           >
             CHECKOUT
-          </button>
-        </div>
+          </MiniCartCheckoutButton>
+        </MiniCartFooterWrapper>
       </MiniCartWrapper>
     );
   }
@@ -68,6 +61,7 @@ class MiniCart extends React.Component {
 
 const mapStateToProps = (state) => ({
   cart: state.cart,
+  currency: state.data.currency,
 });
 
 export default connect(mapStateToProps)(MiniCart);

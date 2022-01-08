@@ -47,11 +47,16 @@ class ProductComponent extends React.Component {
             alt="product"
           />
           <ProductComponentName>
-            {product.name}
+            {`${product.brand} ${product.name}`}
           </ProductComponentName>
           <ProductComponentPrice>
             {`${CURRENCY_SIGNS[currency]} ${amount}`}
           </ProductComponentPrice>
+          {!product.inStock && (
+            <OutOfStockWrapper>
+              OUT OF STOCK
+            </OutOfStockWrapper>
+          )}
         </NavLink>
         {product.inStock && (
           <AddToCartButton
@@ -60,11 +65,6 @@ class ProductComponent extends React.Component {
           >
             <img src={addToCartLogo} alt="logo" />
           </AddToCartButton>
-        )}
-        {!product.inStock && (
-          <OutOfStockWrapper>
-            OUT OF STOCK
-          </OutOfStockWrapper>
         )}
       </ProductComponentWrapper>
     );

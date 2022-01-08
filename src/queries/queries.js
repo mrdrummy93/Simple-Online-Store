@@ -17,6 +17,7 @@ query ProductsQuery($category: CategoryInput) {
       inStock
       gallery
       description
+      brand
       prices {
         currency
         amount
@@ -50,6 +51,7 @@ export const PRODUCT_REQUEST = gql`
         inStock
         gallery
         description
+        brand
         prices {
           currency
           amount

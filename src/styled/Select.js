@@ -1,12 +1,10 @@
 import styled from 'styled-components';
 
-export default styled.select`
-  width: 40px;
+export default styled.div`
   height: 30px;
-  background: white;
-  padding-left: 5px;
+  background: transparent;
   font-size: 20px;
-  border: none;
-  margin-left: 10px;
   cursor: pointer;
+  padding-right: 20px;
+  user-select: none;
 `;

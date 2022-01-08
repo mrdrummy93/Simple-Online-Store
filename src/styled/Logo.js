@@ -6,6 +6,4 @@ export default styled.div`
   width: 30px;
   height: 30px;
   background-size: cover;
-  position: relative;
-  right: 85px;
 `;

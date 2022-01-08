@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import CartItemComponent from './CartItemComponent';
 import { CURRENCY_SIGNS } from '../constants';
+import CartHeading from '../styled/CartHeading';
 
 class CartPage extends React.Component {
   render() {
@@ -12,9 +13,9 @@ class CartPage extends React.Component {
     }, 0);
     return (
       <div>
-        <h1 style={{ paddingBottom: '70px' }}>
+        <CartHeading>
           CART
-        </h1>
+        </CartHeading>
         {cart.map((product, index) => (
           <CartItemComponent product={product} index={index} key={product.uniqId} />
         ))}

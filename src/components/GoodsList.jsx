@@ -1,11 +1,10 @@
 import React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { withRouter } from 'react-router';
 import ContentWrapper from '../styled/ContentWrapper';
 import ProductComponent from './ProductComponent';
+import CategoryHeading from '../styled/CategoryHeading';
 import { client } from '../queries/client';
 import { PRODUCTS_REQUEST } from '../queries/queries';
-import CategoryHeading from '../styled/CategoryHeading';
 
 class GoodsList extends React.Component {
   constructor(props) {
@@ -48,7 +47,7 @@ class GoodsList extends React.Component {
       this.setState({ list: data.category.products });
       // eslint-disable-next-line no-console
     }).catch((e) => console.log(e));
-  }
+  };
 
   render() {
     const {
@@ -62,7 +61,7 @@ class GoodsList extends React.Component {
     return (
       <>
         <CategoryHeading>
-          {category || 'Choose category'}
+          {category || 'All'}
         </CategoryHeading>
         <ContentWrapper>
           {list.map((product) => (

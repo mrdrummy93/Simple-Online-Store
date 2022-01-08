@@ -7,10 +7,9 @@ export default styled.button`
   font-size: 16px;
   line-height: 120%;
   text-align: center;
-  color: black;
+  color: ${props => (props.currentCategory === props.category ? '#5ECE7B' : 'black')};
   border: none;
   background: white;
-  padding-bottom: 30px;
   padding-right: 30px;
   text-transform: uppercase;
 

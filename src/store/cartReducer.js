@@ -1,5 +1,5 @@
 import {
-  ADD_TO_CART, CHANGE_COUNT,
+  ADD_TO_CART, CHANGE_ACTIVE_ATTRIBUTES, CHANGE_COUNT,
 } from './actionsType';
 
 export const initialState = [];
@@ -45,6 +45,14 @@ export function cartReducer(state = initialState, action) {
         }
         return product;
       }).filter((product) => !!product);
+    }
+    case CHANGE_ACTIVE_ATTRIBUTES: {
+      return state.map((product, index) => {
+        if (index === action.payload.index) {
+          return { ...product, activeAttributes: action.payload.activeAttributes };
+        }
+        return product;
+      });
     }
     default: return state;
   }

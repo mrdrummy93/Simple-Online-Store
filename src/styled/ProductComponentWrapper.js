@@ -3,7 +3,6 @@ import AddToCartButton from './AddToCartButton';
 
 export default styled.div`
   padding: 20px;
-  marfin-bottom: 85px;
   position: relative;
 
   &:hover {

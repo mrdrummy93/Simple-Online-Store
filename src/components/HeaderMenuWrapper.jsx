@@ -27,9 +27,8 @@ class HeaderMenuWrapper extends Component {
             to={`${LIST_ROUTE_NAME}/${category.name}`}
           >
             <Button
-              style={{
-                color: currentCategory === category.name ? '#5ECE7B' : 'black',
-              }}
+              currentCategory={currentCategory}
+              category={category.name}
             >
               {category.name}
             </Button>

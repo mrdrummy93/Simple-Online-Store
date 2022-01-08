@@ -1,6 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import ReactHtmlParser from 'react-html-parser';
+import sanitizeHtml from 'sanitize-html';
 import AddToCartButtonInProduct from '../styled/AddToCartButtonInProduct';
 import DescriptionWrapper from '../styled/DescriptionWrapper';
 import ImagesWrapper from '../styled/ImagesWrapper';
@@ -14,6 +16,7 @@ import ProductPageMainImg from '../styled/ProductPageMainImg';
 import { addToCart } from '../store/actions';
 import { PRODUCT_REQUEST } from '../queries/queries';
 import { client } from '../queries/client';
+import ColorProductButton from '../styled/ColorProductButton';
 
 class ProductPage extends React.Component {
   constructor(props) {
@@ -40,6 +43,7 @@ class ProductPage extends React.Component {
       this.setState({
         ...product,
         activeAttributes: getDefaultAttributesValues(product),
+        currentImageSrc: product.gallery[0],
       });
       // eslint-disable-next-line no-console
     }).catch((e) => console.log(e));
@@ -55,9 +59,13 @@ class ProductPage extends React.Component {
   }
 
   addToCartHandler = () => {
+    const {
+      currentImageSrc,
+      ...product
+    } = this.state;
     const { addProductToCart } = this.props;
     addProductToCart({
-      ...this.state,
+      ...product,
       uniqId: getUniqId(this.state),
     });
   }
@@ -69,18 +77,27 @@ class ProductPage extends React.Component {
     const {
       prices,
       gallery,
+      inStock,
       name,
+      brand,
       attributes,
       description,
       activeAttributes,
+      currentImageSrc,
     } = this.state;
     if (!name) return null;
     const { amount } = prices.find((price) => price.currency === currency);
+    const html = sanitizeHtml(description);
     return (
       <ProductPageWrapper>
         <ImagesWrapper>
           {gallery.map((image) => (
             <ProductPageMiniImages
+              onClick={() => {
+                this.setState({
+                  currentImageSrc: image,
+                });
+              }}
               src={image}
               key={image}
               alt="product"
@@ -89,14 +106,17 @@ class ProductPage extends React.Component {
         </ImagesWrapper>
         <ProductPageMainImgWrapper>
           <ProductPageMainImg
-            src={gallery[0]}
+            src={currentImageSrc}
             alt="product"
           />
         </ProductPageMainImgWrapper>
         <DescriptionWrapper>
           <h1>
-            {name}
+            {brand}
           </h1>
+          <h2>
+            {name}
+          </h2>
           {attributes.map((attribute) => (
             <div key={attribute.id}>
               <h4>
@@ -108,23 +128,17 @@ class ProductPage extends React.Component {
                   const isCurrentAttributeActive = activeAttributes[attribute.id] === attributeItem.value;
                   return (attribute.id === 'Color'
                     ? (
-                      <SizeProductButton
+                      <ColorProductButton
                         key={attributeItem.id}
-                        style={{
-                          backgroundColor: attributeItem.value,
-                          outline: isCurrentAttributeActive ? '3px solid black' : '1px solid black',
-                          opacity: isCurrentAttributeActive ? '1' : '0.5',
-                        }}
+                        attributeItem={attributeItem.value}
+                        isCurrentAttributeActive={isCurrentAttributeActive}
                         onClick={this.handleClick(attribute.id, attributeItem.value)}
                       />
                     )
                     : (
                       <SizeProductButton
                         key={attributeItem.id}
-                        style={{
-                          backgroundColor: isCurrentAttributeActive ? 'black' : 'white',
-                          color: !isCurrentAttributeActive ? 'black' : 'white',
-                        }}
+                        isCurrentAttributeActive={isCurrentAttributeActive}
                         onClick={this.handleClick(attribute.id, attributeItem.value)}
                       >
                         {attributeItem.value}
@@ -138,16 +152,23 @@ class ProductPage extends React.Component {
             <h4>PRICE:</h4>
             <p><strong>{`${CURRENCY_SIGNS[currency]} ${amount}`}</strong></p>
           </div>
-          <AddToCartButtonInProduct
-            onClick={this.addToCartHandler}
-          >
-            ADD TO CART
-          </AddToCartButtonInProduct>
+          {inStock
+            ? (
+              <AddToCartButtonInProduct
+                onClick={this.addToCartHandler}
+              >
+                ADD TO CART
+              </AddToCartButtonInProduct>
+            )
+            : (
+              <AddToCartButtonInProduct>
+                OUT OF STOCK
+              </AddToCartButtonInProduct>
+            )}
           {/* eslint-disable-next-line react/no-danger */}
-          <div dangerouslySetInnerHTML={{
-            __html: description,
-          }}
-          />
+          <div>
+            {ReactHtmlParser(html)}
+          </div>
         </DescriptionWrapper>
       </ProductPageWrapper>
     );

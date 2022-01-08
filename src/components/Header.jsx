@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 import HeaderWrapper from '../styled/HeaderWrapper';
 import Logo from '../styled/Logo';
 import CartLogo from '../styled/CartLogo';
@@ -9,6 +10,7 @@ import Currency from './Currency';
 import HeaderMenuWrapper from './HeaderMenuWrapper';
 import { LIST_ROUTE_NAME } from '../routeNames';
 import CartLogoWrapper from '../styled/CartLogoWrapper';
+import Backdrop from '../styled/Backdrop';
 
 class Header extends React.Component {
   constructor(props) {
@@ -16,24 +18,24 @@ class Header extends React.Component {
     this.state = {
       showMiniCart: false,
     };
-    this.handleShow = this.handleShow.bind(this);
   }
 
-  handleShow() {
+  toggleShow = () => {
     const { showMiniCart } = this.state;
     this.setState({ showMiniCart: !showMiniCart });
   }
 
   render() {
     const { showMiniCart } = this.state;
-    const {
-      categories,
-    } = this.props;
+    const { categories, cart } = this.props;
 
     const miniCart = showMiniCart ? (
-      <MiniCart />
+      <>
+        <Backdrop onClick={this.toggleShow} />
+        <MiniCart toggleShow={this.toggleShow} />
+      </>
     ) : null;
-
+    const cartCount = cart.length;
     return (
       <HeaderWrapper>
         {!categories.length ? null : (
@@ -48,9 +50,29 @@ class Header extends React.Component {
           <Currency />
           <div id="cart-root" />
           <CartLogoWrapper>
+            {!!cartCount && (
+              <div
+                style={{
+                  backgroundColor: 'black',
+                  color: 'white',
+                  position: 'absolute',
+                  fontSize: '12px',
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  top: '-8px',
+                  right: '-8px',
+                }}
+              >
+                {cartCount}
+              </div>
+            )}
             <CartLogo
               role="none"
-              onClick={this.handleShow}
+              onClick={this.toggleShow}
             />
             {miniCart}
           </CartLogoWrapper>
@@ -60,4 +82,8 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+});
+
+export default connect(mapStateToProps)(Header);

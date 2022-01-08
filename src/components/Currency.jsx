@@ -6,6 +6,8 @@ import { client } from '../queries/client';
 import { CURRENCIES_REQUEST } from '../queries/queries';
 import { CURRENCY_SIGNS } from '../constants';
 import { changeCurrency } from '../store/actions';
+import currencyArrow from '../assets/currencyArrow.svg';
+import OptionsWrapper from '../styled/OptionsWrapper';
 
 class Currency extends React.Component {
   constructor(props) {
@@ -13,6 +15,7 @@ class Currency extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.state = {
       currencies: ['USD'],
+      isSelectOpen: false,
     };
   }
 
@@ -25,10 +28,13 @@ class Currency extends React.Component {
     }).catch((e) => console.log(e));
   }
 
-  handleChange(event) {
+  handleChange = (value) => () => {
     const { handleChangeCurrency } = this.props;
-    const { value } = event.target;
     handleChangeCurrency(value);
+  }
+
+  toggleSelect = () => {
+    this.setState((prevState) => ({ isSelectOpen: !prevState.isSelectOpen }));
   }
 
   render() {
@@ -37,16 +43,44 @@ class Currency extends React.Component {
     } = this.props;
     const {
       currencies,
+      isSelectOpen,
     } = this.state;
 
     return (
-      <Select value={currency} onChange={this.handleChange}>
-        {currencies.map((item) => (
-          <Option value={item} key={item}>
-            {`${CURRENCY_SIGNS[item]} ${item}`}
-          </Option>
-        ))}
-      </Select>
+      <div style={{
+        position: 'relative', display: 'flex', alignItems: 'center',
+      }}
+      >
+        <img
+          style={{
+            width: '10px',
+            height: '10px',
+            right: 0,
+            position: 'absolute',
+            zIndex: -1,
+            transform: `rotate(${isSelectOpen ? 0 : 180}deg)`,
+          }}
+          src={currencyArrow}
+          alt="arrow"
+        />
+        <Select
+          onClick={this.toggleSelect}
+          role="button"
+          tabIndex={0}
+        >
+          {CURRENCY_SIGNS[currency]}
+          {isSelectOpen
+            && (
+              <OptionsWrapper>
+                {currencies.map((item) => (
+                  <Option key={item} onClick={this.handleChange(item)}>
+                    {`${CURRENCY_SIGNS[item]} ${item}`}
+                  </Option>
+                ))}
+              </OptionsWrapper>
+            )}
+        </Select>
+      </div>
     );
   }
 }
