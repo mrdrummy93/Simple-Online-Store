@@ -10,3 +10,8 @@ export const getUniqId = (product) => {
   const activeAttributeValues = Object.values(product.activeAttributes);
   return `${product.id}_${activeAttributeValues.join('_')}`;
 };
+
+export const getAmountCurrentCurrency = (prices, currentCurrency) => {
+  const { amount } = prices.find((price) => price.currency.label === currentCurrency.label);
+  return amount;
+};

@@ -1,10 +1,10 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import ContentWrapper from '../styled/ContentWrapper';
-import ProductComponent from './ProductComponent';
-import CategoryHeading from '../styled/CategoryHeading';
-import { client } from '../queries/client';
-import { PRODUCTS_REQUEST } from '../queries/queries';
+import ContentWrapper from './style/ContentWrapper';
+import ProductComponent from '../ProductComponent/ProductComponent';
+import CategoryHeading from './style/CategoryHeading';
+import { client } from '../../queries/client';
+import { PRODUCTS_REQUEST } from '../../queries/queries';
 
 class GoodsList extends React.Component {
   constructor(props) {
@@ -42,7 +42,7 @@ class GoodsList extends React.Component {
     } = this.props;
     client.query({
       query: PRODUCTS_REQUEST,
-      variables: category ? { category: { title: category } } : undefined,
+      variables: { category: { title: category || 'all' } },
     }).then(({ data }) => {
       this.setState({ list: data.category.products });
       // eslint-disable-next-line no-console

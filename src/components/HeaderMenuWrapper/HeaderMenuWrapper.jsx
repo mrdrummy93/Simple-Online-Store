@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { withRouter } from 'react-router';
-import MenuWrapper from '../styled/MenuWrapper';
-import Button from '../styled/Button';
-import { LIST_ROUTE_NAME } from '../routeNames';
+import MenuWrapper from './style/MenuWrapper';
+import Button from './style/Button';
+import { LIST_ROUTE_NAME } from '../../routeNames';
 
 class HeaderMenuWrapper extends Component {
   render() {

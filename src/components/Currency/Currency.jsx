@@ -1,20 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Select from '../styled/Select';
-import Option from '../styled/Option';
-import { client } from '../queries/client';
-import { CURRENCIES_REQUEST } from '../queries/queries';
-import { CURRENCY_SIGNS } from '../constants';
-import { changeCurrency } from '../store/actions';
-import currencyArrow from '../assets/currencyArrow.svg';
-import OptionsWrapper from '../styled/OptionsWrapper';
+import Select from './styled/Select';
+import Option from './styled/Option';
+import { client } from '../../queries/client';
+import { CURRENCIES_REQUEST } from '../../queries/queries';
+import { changeCurrency } from '../../store/actions';
+import currencyArrow from '../../assets/currencyArrow.svg';
+import OptionsWrapper from './styled/OptionsWrapper';
 
 class Currency extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.state = {
-      currencies: ['USD'],
+      currencies: [{
+        label: 'USD',
+        symbol: '$',
+      }],
       isSelectOpen: false,
     };
   }
@@ -28,9 +30,9 @@ class Currency extends React.Component {
     }).catch((e) => console.log(e));
   }
 
-  handleChange = (value) => () => {
+  handleChange = (label, symbol) => () => {
     const { handleChangeCurrency } = this.props;
-    handleChangeCurrency(value);
+    handleChangeCurrency({ label, symbol });
   }
 
   toggleSelect = () => {
@@ -68,13 +70,13 @@ class Currency extends React.Component {
           role="button"
           tabIndex={0}
         >
-          {CURRENCY_SIGNS[currency]}
+          {currency.symbol}
           {isSelectOpen
             && (
               <OptionsWrapper>
-                {currencies.map((item) => (
-                  <Option key={item} onClick={this.handleChange(item)}>
-                    {`${CURRENCY_SIGNS[item]} ${item}`}
+                {currencies.map(({ label, symbol }) => (
+                  <Option key={label} onClick={this.handleChange(label, symbol)}>
+                    {`${symbol} ${label}`}
                   </Option>
                 ))}
               </OptionsWrapper>

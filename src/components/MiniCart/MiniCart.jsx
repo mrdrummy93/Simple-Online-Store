@@ -1,21 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import MiniCartWrapper from '../styled/MiniCartWrapper';
-import CartItemComponent from './CartItemComponent';
-import { CURRENCY_SIGNS } from '../constants';
-import MiniCartBodyWrapper from '../styled/MiniCartBodyWrapper';
-import HorizontalLine from '../styled/HorizontalLine';
-import MiniCartTotalsWrapper from '../styled/MiniCartTotalsWrapper';
-import MiniCartFooterWrapper from '../styled/MiniCartFooterWrapper';
-import MiniCartCheckoutButton from '../styled/MiniCartCheckoutButton';
-import MiniCartToCartButton from '../styled/MiniCartToCartButton';
+import MiniCartWrapper from './style/MiniCartWrapper';
+import CartItemComponent from '../CartItemComponent/CartItemComponent';
+import MiniCartBodyWrapper from './style/MiniCartBodyWrapper';
+import HorizontalLine from './style/HorizontalLine';
+import MiniCartTotalsWrapper from './style/MiniCartTotalsWrapper';
+import MiniCartFooterWrapper from './style/MiniCartFooterWrapper';
+import MiniCartCheckoutButton from './style/MiniCartCheckoutButton';
+import MiniCartToCartButton from './style/MiniCartToCartButton';
+import { getAmountCurrentCurrency } from '../../helpers';
 
 class MiniCart extends React.Component {
   render() {
     const { cart, currency, toggleShow } = this.props;
     const total = cart.reduce((acc, product) => {
-      const { amount } = product.prices.find((price) => price.currency === currency);
+      const amount = getAmountCurrentCurrency(product.prices, currency);
       return acc + amount * product.count;
     }, 0);
     return (
@@ -29,15 +29,15 @@ class MiniCart extends React.Component {
         </p>
         <MiniCartBodyWrapper>
           {cart.map((product, index) => (
-            <>
-              <CartItemComponent key={product.uniqId} index={index} product={product} />
+            <div key={product.uniqId} style={{ display: 'flex', flexDirection: 'column' }}>
+              <CartItemComponent index={index} product={product} />
               <HorizontalLine />
-            </>
+            </div>
           ))}
         </MiniCartBodyWrapper>
         <MiniCartTotalsWrapper>
           <h2>Total</h2>
-          <h2>{` ${CURRENCY_SIGNS[currency]} ${total.toFixed(2)}`}</h2>
+          <h2>{` ${currency.symbol} ${total.toFixed(2)}`}</h2>
         </MiniCartTotalsWrapper>
         <MiniCartFooterWrapper>
           <NavLink to="/cart">

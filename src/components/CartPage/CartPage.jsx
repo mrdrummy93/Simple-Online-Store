@@ -1,14 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import CartItemComponent from './CartItemComponent';
-import { CURRENCY_SIGNS } from '../constants';
-import CartHeading from '../styled/CartHeading';
+import CartItemComponent from '../CartItemComponent/CartItemComponent';
+import CartHeading from './style/CartHeading';
+import { getAmountCurrentCurrency } from '../../helpers';
+import HorizontalLine from '../MiniCart/style/HorizontalLine';
 
 class CartPage extends React.Component {
   render() {
     const { cart, currency } = this.props;
     const total = cart.reduce((acc, product) => {
-      const { amount } = product.prices.find((price) => price.currency === currency);
+      const amount = getAmountCurrentCurrency(product.prices, currency);
       return acc + amount * product.count;
     }, 0);
     return (
@@ -17,11 +18,14 @@ class CartPage extends React.Component {
           CART
         </CartHeading>
         {cart.map((product, index) => (
-          <CartItemComponent product={product} index={index} key={product.uniqId} />
+          <div key={product.uniqId}>
+            <CartItemComponent product={product} index={index} />
+            <HorizontalLine />
+          </div>
         ))}
         <h2>
           Total
-          {` ${CURRENCY_SIGNS[currency]} ${total.toFixed(2)}`}
+          {` ${currency.symbol} ${total.toFixed(2)}`}
         </h2>
       </div>
     );

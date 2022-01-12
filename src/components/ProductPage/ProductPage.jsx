@@ -3,20 +3,19 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
 import sanitizeHtml from 'sanitize-html';
-import AddToCartButtonInProduct from '../styled/AddToCartButtonInProduct';
-import DescriptionWrapper from '../styled/DescriptionWrapper';
-import ImagesWrapper from '../styled/ImagesWrapper';
-import ProductPageMainImgWrapper from '../styled/ProductPageMainImgWrapper';
-import ProductPageWrapper from '../styled/ProductPageWrapper';
-import SizeProductButton from '../styled/SizeProductButton';
-import { CURRENCY_SIGNS } from '../constants';
-import { getDefaultAttributesValues, getUniqId } from '../helpers';
-import ProductPageMiniImages from '../styled/ProductPageMiniImages';
-import ProductPageMainImg from '../styled/ProductPageMainImg';
-import { addToCart } from '../store/actions';
-import { PRODUCT_REQUEST } from '../queries/queries';
-import { client } from '../queries/client';
-import ColorProductButton from '../styled/ColorProductButton';
+import AddToCartButtonInProduct from './style/AddToCartButtonInProduct';
+import DescriptionWrapper from './style/DescriptionWrapper';
+import ImagesWrapper from './style/ImagesWrapper';
+import ProductPageMainImgWrapper from './style/ProductPageMainImgWrapper';
+import ProductPageWrapper from './style/ProductPageWrapper';
+import SizeProductButton from '../CartItemComponent/style/SizeProductButton';
+import { getDefaultAttributesValues, getUniqId, getAmountCurrentCurrency } from '../../helpers';
+import ProductPageMiniImages from './style/ProductPageMiniImages';
+import ProductPageMainImg from './style/ProductPageMainImg';
+import { addToCart } from '../../store/actions';
+import { PRODUCT_REQUEST } from '../../queries/queries';
+import { client } from '../../queries/client';
+import ColorProductButton from '../CartItemComponent/style/ColorProductButton';
 
 class ProductPage extends React.Component {
   constructor(props) {
@@ -86,7 +85,7 @@ class ProductPage extends React.Component {
       currentImageSrc,
     } = this.state;
     if (!name) return null;
-    const { amount } = prices.find((price) => price.currency === currency);
+    const amount = getAmountCurrentCurrency(prices, currency);
     const html = sanitizeHtml(description);
     return (
       <ProductPageWrapper>
@@ -150,7 +149,7 @@ class ProductPage extends React.Component {
           ))}
           <div>
             <h4>PRICE:</h4>
-            <p><strong>{`${CURRENCY_SIGNS[currency]} ${amount}`}</strong></p>
+            <p><strong>{`${currency.symbol} ${amount}`}</strong></p>
           </div>
           {inStock
             ? (

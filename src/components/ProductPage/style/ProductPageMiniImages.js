@@ -5,4 +5,5 @@ export default styled.img`
   height: 80px;
   object-fit: contain;
   cursor: pointer;
+  margin-bottom: 10px;
 `;

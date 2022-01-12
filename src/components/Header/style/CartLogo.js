@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import emptyCartLogo from '../assets/emptyCart.svg';
+import emptyCartLogo from '../../../assets/emptyCart.svg';
 
 export default styled.div`
   background-image: url(${emptyCartLogo});

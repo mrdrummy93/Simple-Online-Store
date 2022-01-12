@@ -11,4 +11,6 @@ export default styled.div`
   padding: 15px;
   max-height: calc(100vh - 150px) ;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
 `;

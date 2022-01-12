@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import CartPage from './CartPage';
-import ProductPage from './ProductPage';
-import GoodsList from './GoodsList';
-import { LIST_ROUTE_NAME, PRODUCT_ROUTE_NAME } from '../routeNames';
+import CartPage from '../CartPage/CartPage';
+import ProductPage from '../ProductPage/ProductPage';
+import GoodsList from '../GoodsList/GoodsList';
+import { LIST_ROUTE_NAME, PRODUCT_ROUTE_NAME } from '../../routeNames';
 
 class Content extends React.Component {
   render() {

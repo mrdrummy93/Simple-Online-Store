@@ -1,16 +1,16 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import HeaderWrapper from '../styled/HeaderWrapper';
-import Logo from '../styled/Logo';
-import CartLogo from '../styled/CartLogo';
-import CurrencyAndCartWrapper from '../styled/CurrencyAndCartWrapper';
-import MiniCart from './MiniCart';
-import Currency from './Currency';
-import HeaderMenuWrapper from './HeaderMenuWrapper';
-import { LIST_ROUTE_NAME } from '../routeNames';
-import CartLogoWrapper from '../styled/CartLogoWrapper';
-import Backdrop from '../styled/Backdrop';
+import HeaderWrapper from './style/HeaderWrapper';
+import Logo from './style/Logo';
+import CartLogo from './style/CartLogo';
+import CurrencyAndCartWrapper from './style/CurrencyAndCartWrapper';
+import MiniCart from '../MiniCart/MiniCart';
+import Currency from '../Currency/Currency';
+import HeaderMenuWrapper from '../HeaderMenuWrapper/HeaderMenuWrapper';
+import { LIST_ROUTE_NAME } from '../../routeNames';
+import CartLogoWrapper from './style/CartLogoWrapper';
+import Backdrop from './style/Backdrop';
 
 class Header extends React.Component {
   constructor(props) {

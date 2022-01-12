@@ -1,24 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import SizeProductButton from '../styled/SizeProductButton';
-import CartLeftColumn from '../styled/CartLeftColumn';
-import CartCounterButton from '../styled/CartCounterButton';
-import CartItemWrapper from '../styled/CartItemWrapper';
-import CartItemPrice from '../styled/CartItemPrice';
-import CartRightColumn from '../styled/CartRightColumn';
-import CartCounterWrapper from '../styled/CartCounterWrapper';
-import { CURRENCY_SIGNS } from '../constants';
-import ImgInCartWrapper from '../styled/ImgInCartWrapper';
-import { changeActiveAttributes, changeCount } from '../store/actions';
-import FirstHeading from '../styled/FirstHeading';
-import SecondHeading from '../styled/SecondHeading';
-import FourthHeading from '../styled/FourthHeading';
-import AttributesButtonsWrapper from '../styled/AttributesButtonsWrapper';
-import CartProductCounter from '../styled/CartProductCounter';
-import ColorProductButton from '../styled/ColorProductButton';
-import { CartPhotoSliderLeft, CartPhotoSliderRight } from '../styled/CartPhotoSlider';
-import leftArrow from '../assets/iconMonster-arrow-left-circle-thin.svg';
-import rightArrow from '../assets/iconMonster-arrow-right-circle-thin.svg';
+import SizeProductButton from './style/SizeProductButton';
+import CartLeftColumn from './style/CartLeftColumn';
+import CartCounterButton from './style/CartCounterButton';
+import CartItemWrapper from './style/CartItemWrapper';
+import CartItemPrice from './style/CartItemPrice';
+import CartRightColumn from './style/CartRightColumn';
+import CartCounterWrapper from './style/CartCounterWrapper';
+import ImgInCartWrapper from './style/ImgInCartWrapper';
+import { changeActiveAttributes, changeCount } from '../../store/actions';
+import FirstHeading from './style/FirstHeading';
+import SecondHeading from './style/SecondHeading';
+import FourthHeading from './style/FourthHeading';
+import AttributesButtonsWrapper from './style/AttributesButtonsWrapper';
+import CartProductCounter from './style/CartProductCounter';
+import ColorProductButton from './style/ColorProductButton';
+import { CartPhotoSliderLeft, CartPhotoSliderRight } from './style/CartPhotoSlider';
+import leftArrow from '../../assets/iconMonster-arrow-left-circle-thin.svg';
+import rightArrow from '../../assets/iconMonster-arrow-right-circle-thin.svg';
+import { getAmountCurrentCurrency } from '../../helpers';
 
 class CartItemComponent extends React.Component {
   constructor(props) {
@@ -63,7 +63,7 @@ class CartItemComponent extends React.Component {
   render() {
     const { product, currency } = this.props;
     const { currentImageIndex } = this.state;
-    const { amount } = product.prices.find((price) => price.currency === currency);
+    const amount = getAmountCurrentCurrency(product.prices, currency);
     const { activeAttributes } = product;
 
     return (
@@ -76,7 +76,7 @@ class CartItemComponent extends React.Component {
             {product.name}
           </SecondHeading>
           <CartItemPrice>
-            {`${CURRENCY_SIGNS[currency]} ${amount}`}
+            {`${currency.symbol} ${amount}`}
           </CartItemPrice>
           {product.attributes.map((attribute) => (
             <div key={attribute.id}>

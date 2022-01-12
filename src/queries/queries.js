@@ -19,7 +19,9 @@ query ProductsQuery($category: CategoryInput) {
       description
       brand
       prices {
-        currency
+        currency {
+          label
+        }
         amount
       }
       attributes {
@@ -39,7 +41,10 @@ query ProductsQuery($category: CategoryInput) {
 
 export const CURRENCIES_REQUEST = gql`
   query CurrenciesQuery {
-    currencies
+    currencies {
+      label
+      symbol
+    }
   }
 `;
 
@@ -53,7 +58,9 @@ export const PRODUCT_REQUEST = gql`
         description
         brand
         prices {
-          currency
+          currency {
+            label
+          }
           amount
         }
         attributes {

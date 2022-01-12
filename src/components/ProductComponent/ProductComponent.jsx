@@ -1,17 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { PRODUCT_ROUTE_NAME } from '../routeNames';
-import { CURRENCY_SIGNS } from '../constants';
-import AddToCartButton from '../styled/AddToCartButton';
-import ProductComponentWrapper from '../styled/ProductComponentWrapper';
-import addToCartLogo from '../assets/addToCartLogo.svg';
-import ProductComponentImg from '../styled/ProductComponentImg';
-import ProductComponentName from '../styled/ProductComponentName';
-import ProductComponentPrice from '../styled/ProductComponentPrice';
-import OutOfStockWrapper from '../styled/OutOfStockWrapper';
-import { addToCart } from '../store/actions';
-import { getDefaultAttributesValues, getUniqId } from '../helpers';
+import { PRODUCT_ROUTE_NAME } from '../../routeNames';
+import AddToCartButton from './style/AddToCartButton';
+import ProductComponentWrapper from './style/ProductComponentWrapper';
+import addToCartLogo from '../../assets/addToCartLogo.svg';
+import ProductComponentImg from './style/ProductComponentImg';
+import ProductComponentName from './style/ProductComponentName';
+import ProductComponentPrice from './style/ProductComponentPrice';
+import OutOfStockWrapper from './style/OutOfStockWrapper';
+import { addToCart } from '../../store/actions';
+import { getDefaultAttributesValues, getUniqId, getAmountCurrentCurrency } from '../../helpers';
 
 class ProductComponent extends React.Component {
   addToCartHandler = () => {
@@ -31,7 +30,7 @@ class ProductComponent extends React.Component {
 
   render() {
     const { product, currency } = this.props;
-    const { amount } = product.prices.find((price) => price.currency === currency);
+    const amount = getAmountCurrentCurrency(product.prices, currency);
     // eslint-disable-next-line no-return-assign
     return (
       <ProductComponentWrapper>
@@ -50,7 +49,7 @@ class ProductComponent extends React.Component {
             {`${product.brand} ${product.name}`}
           </ProductComponentName>
           <ProductComponentPrice>
-            {`${CURRENCY_SIGNS[currency]} ${amount}`}
+            {`${currency.symbol} ${amount}`}
           </ProductComponentPrice>
           {!product.inStock && (
             <OutOfStockWrapper>

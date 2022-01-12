@@ -3,7 +3,10 @@ import {
 } from './actionsType';
 
 export const initialState = {
-  currency: 'USD',
+  currency: {
+    label: 'USD',
+    symbol: '$',
+  },
 };
 
 export function dataReducer(state = initialState, action) {
