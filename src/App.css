@@ -15,3 +15,8 @@
   src: url('styled/fonts/Raleway-Medium.ttf');
   font-weight: 500;
 }
+
+*{
+  padding: 0px;
+  margin: 0px;
+}

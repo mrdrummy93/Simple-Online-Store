@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import CartItemComponent from '../CartItemComponent/CartItemComponent';
-import CartHeading from './style/CartHeading';
 import { getAmountCurrentCurrency } from '../../helpers';
-import HorizontalLine from '../MiniCart/style/HorizontalLine';
+import HorizontalLineCartPage from './style/HorizontalLineCartPage';
 
 class CartPage extends React.Component {
   render() {
@@ -14,13 +13,13 @@ class CartPage extends React.Component {
     }, 0);
     return (
       <div>
-        <CartHeading>
+        <h1>
           CART
-        </CartHeading>
+        </h1>
         {cart.map((product, index) => (
           <div key={product.uniqId}>
             <CartItemComponent product={product} index={index} />
-            <HorizontalLine />
+            <HorizontalLineCartPage />
           </div>
         ))}
         <h2>

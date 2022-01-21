@@ -5,7 +5,6 @@ export default styled.div`
   position: absolute;
   z-index: 999;
   border: 1px solid black;
-  width: 405px;
   right: 0px;
   background-color: white;
   padding: 15px;

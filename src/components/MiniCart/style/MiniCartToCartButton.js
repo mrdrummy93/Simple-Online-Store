@@ -6,4 +6,10 @@ export default styled.button`
   background-color: white;
   border: 1px solid black;
   cursor: pointer;
+
+  &:hover {
+    cursor: pointer;
+    color: white;
+    background-color: black;
+  }
 `;

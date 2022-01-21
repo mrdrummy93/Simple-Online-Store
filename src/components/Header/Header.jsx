@@ -11,6 +11,7 @@ import HeaderMenuWrapper from '../HeaderMenuWrapper/HeaderMenuWrapper';
 import { LIST_ROUTE_NAME } from '../../routeNames';
 import CartLogoWrapper from './style/CartLogoWrapper';
 import Backdrop from './style/Backdrop';
+import CartOverlayTotals from './style/CartOverlayTotals';
 
 class Header extends React.Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class Header extends React.Component {
         <MiniCart toggleShow={this.toggleShow} />
       </>
     ) : null;
-    const cartCount = cart.length;
+    const cartCount = cart.reduce((acc, item) => acc + item.count, 0);
     return (
       <HeaderWrapper>
         {!categories.length ? null : (
@@ -51,24 +52,9 @@ class Header extends React.Component {
           <div id="cart-root" />
           <CartLogoWrapper>
             {!!cartCount && (
-              <div
-                style={{
-                  backgroundColor: 'black',
-                  color: 'white',
-                  position: 'absolute',
-                  fontSize: '12px',
-                  width: '16px',
-                  height: '16px',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  top: '-8px',
-                  right: '-8px',
-                }}
-              >
+              <CartOverlayTotals>
                 {cartCount}
-              </div>
+              </CartOverlayTotals>
             )}
             <CartLogo
               role="none"

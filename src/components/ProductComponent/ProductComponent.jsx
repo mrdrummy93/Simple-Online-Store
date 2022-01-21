@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import { PRODUCT_ROUTE_NAME } from '../../routeNames';
 import AddToCartButton from './style/AddToCartButton';
 import ProductComponentWrapper from './style/ProductComponentWrapper';
@@ -11,6 +10,7 @@ import ProductComponentPrice from './style/ProductComponentPrice';
 import OutOfStockWrapper from './style/OutOfStockWrapper';
 import { addToCart } from '../../store/actions';
 import { getDefaultAttributesValues, getUniqId, getAmountCurrentCurrency } from '../../helpers';
+import StyledNavLink from './style/StyledNavLink';
 
 class ProductComponent extends React.Component {
   addToCartHandler = () => {
@@ -34,12 +34,8 @@ class ProductComponent extends React.Component {
     // eslint-disable-next-line no-return-assign
     return (
       <ProductComponentWrapper>
-        <NavLink
+        <StyledNavLink
           to={`${PRODUCT_ROUTE_NAME}/${product.id}`}
-          style={{
-            textDecoration: 'none',
-            color: 'black',
-          }}
         >
           <ProductComponentImg
             src={product.gallery[0]}
@@ -56,7 +52,7 @@ class ProductComponent extends React.Component {
               OUT OF STOCK
             </OutOfStockWrapper>
           )}
-        </NavLink>
+        </StyledNavLink>
         {product.inStock && (
           <AddToCartButton
             onClick={this.addToCartHandler}

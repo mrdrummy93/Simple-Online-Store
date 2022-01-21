@@ -4,12 +4,13 @@ import { NavLink } from 'react-router-dom';
 import MiniCartWrapper from './style/MiniCartWrapper';
 import CartItemComponent from '../CartItemComponent/CartItemComponent';
 import MiniCartBodyWrapper from './style/MiniCartBodyWrapper';
-import HorizontalLine from './style/HorizontalLine';
+import HorizontalLineMiniCart from './style/HorizontalLineMiniCart';
 import MiniCartTotalsWrapper from './style/MiniCartTotalsWrapper';
 import MiniCartFooterWrapper from './style/MiniCartFooterWrapper';
 import MiniCartCheckoutButton from './style/MiniCartCheckoutButton';
 import MiniCartToCartButton from './style/MiniCartToCartButton';
 import { getAmountCurrentCurrency } from '../../helpers';
+import MiniCartComponentWrapper from './style/MiniCartComponentWrapper';
 
 class MiniCart extends React.Component {
   render() {
@@ -18,21 +19,20 @@ class MiniCart extends React.Component {
       const amount = getAmountCurrentCurrency(product.prices, currency);
       return acc + amount * product.count;
     }, 0);
+    const cartCount = cart.reduce((acc, item) => acc + item.count, 0);
     return (
       <MiniCartWrapper>
         <p>
-          <strong>My bag.</strong>
-          {' '}
-          {cart.length}
-          {' '}
+          <strong>My bag. </strong>
+          {cartCount}
           items
         </p>
         <MiniCartBodyWrapper>
           {cart.map((product, index) => (
-            <div key={product.uniqId} style={{ display: 'flex', flexDirection: 'column' }}>
+            <MiniCartComponentWrapper key={product.uniqId}>
               <CartItemComponent index={index} product={product} />
-              <HorizontalLine />
-            </div>
+              <HorizontalLineMiniCart />
+            </MiniCartComponentWrapper>
           ))}
         </MiniCartBodyWrapper>
         <MiniCartTotalsWrapper>

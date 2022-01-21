@@ -1,24 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import SizeProductButton from './style/SizeProductButton';
-import CartLeftColumn from './style/CartLeftColumn';
 import CartCounterButton from './style/CartCounterButton';
 import CartItemWrapper from './style/CartItemWrapper';
-import CartItemPrice from './style/CartItemPrice';
 import CartRightColumn from './style/CartRightColumn';
 import CartCounterWrapper from './style/CartCounterWrapper';
-import ImgInCartWrapper from './style/ImgInCartWrapper';
+import ImgInCart from './style/ImgInCart';
 import { changeActiveAttributes, changeCount } from '../../store/actions';
-import FirstHeading from './style/FirstHeading';
-import SecondHeading from './style/SecondHeading';
-import FourthHeading from './style/FourthHeading';
-import AttributesButtonsWrapper from './style/AttributesButtonsWrapper';
 import CartProductCounter from './style/CartProductCounter';
-import ColorProductButton from './style/ColorProductButton';
 import { CartPhotoSliderLeft, CartPhotoSliderRight } from './style/CartPhotoSlider';
-import leftArrow from '../../assets/iconMonster-arrow-left-circle-thin.svg';
-import rightArrow from '../../assets/iconMonster-arrow-right-circle-thin.svg';
-import { getAmountCurrentCurrency } from '../../helpers';
+import { CartPhotoSliderLeftArrow, CartPhotoSliderRightArrow } from './style/CartPhotoSliderArrows';
+import ImgInCartWrapper from './style/ImgInCartWrapper';
+import Description from '../Description/Description';
 
 class CartItemComponent extends React.Component {
   constructor(props) {
@@ -34,12 +26,8 @@ class CartItemComponent extends React.Component {
   }
 
   handleClick = (id, val) => () => {
-    const { handleChangeActiveAttributes, index } = this.props;
-    const {
-      currentImageIndex,
-      ...activeAttributes
-    } = this.state;
-    handleChangeActiveAttributes(index, { ...activeAttributes, [id]: val });
+    const { handleChangeActiveAttributes, index, product } = this.props;
+    handleChangeActiveAttributes(index, { ...product.activeAttributes, [id]: val });
   }
 
   changeCurrentImageIndex = (value) => () => {
@@ -61,90 +49,85 @@ class CartItemComponent extends React.Component {
   };
 
   render() {
-    const { product, currency } = this.props;
+    const { product } = this.props;
     const { currentImageIndex } = this.state;
-    const amount = getAmountCurrentCurrency(product.prices, currency);
-    const { activeAttributes } = product;
+    const {
+      prices,
+      gallery,
+      inStock,
+      name,
+      brand,
+      attributes,
+      description,
+      activeAttributes,
+    } = product;
+
+    const arrows = gallery.length > 1 ? (
+      <>
+        <CartPhotoSliderLeft
+          onClick={this.changeCurrentImageIndex(-1)}
+          type="button"
+        >
+          <CartPhotoSliderLeftArrow />
+        </CartPhotoSliderLeft>
+        <CartPhotoSliderRight
+          onClick={this.changeCurrentImageIndex(1)}
+          type="button"
+        >
+          <CartPhotoSliderRightArrow />
+        </CartPhotoSliderRight>
+      </>
+    ) : null;
 
     return (
       <CartItemWrapper>
-        <CartLeftColumn>
-          <FirstHeading>
-            {product.brand}
-          </FirstHeading>
-          <SecondHeading>
-            {product.name}
-          </SecondHeading>
-          <CartItemPrice>
-            {`${currency.symbol} ${amount}`}
-          </CartItemPrice>
-          {product.attributes.map((attribute) => (
-            <div key={attribute.id}>
-              <FourthHeading>
-                {attribute.name}
-                :
-              </FourthHeading>
-              <AttributesButtonsWrapper>
-                {attribute.items.map((attributeItem) => {
-                  const isCurrentAttributeActive = activeAttributes[attribute.id] === attributeItem.value;
-                  return (attribute.id === 'Color'
-                    ? (
-                      <ColorProductButton
-                        key={attributeItem.id}
-                        attributeItem={attributeItem.value}
-                        isCurrentAttributeActive={isCurrentAttributeActive}
-                        onClick={this.handleClick(attribute.id, attributeItem.value)}
-                      />
-                    )
-                    : (
-                      <SizeProductButton
-                        key={attributeItem.id}
-                        isCurrentAttributeActive={isCurrentAttributeActive}
-                        onClick={this.handleClick(attribute.id, attributeItem.value)}
-                      >
-                        {attributeItem.value}
-                      </SizeProductButton>
-                    ));
-                })}
-              </AttributesButtonsWrapper>
-            </div>
-          ))}
-        </CartLeftColumn>
+
+        <Description
+          brand={brand}
+          name={name}
+          inStock={inStock}
+          addToCartHandler={this.addToCartHandler}
+          attributes={attributes}
+          handleClick={this.handleClick}
+          activeAttributes={activeAttributes}
+          prices={prices}
+          description={description}
+          isInCart
+        />
+
         <CartRightColumn>
+
           <CartCounterWrapper>
+
             <CartCounterButton
               onClick={this.handleCount(1)}
             >
               +
             </CartCounterButton>
+
             <CartProductCounter>
               {product.count}
             </CartProductCounter>
+
             <CartCounterButton
               onClick={this.handleCount(-1)}
             >
               -
             </CartCounterButton>
+
           </CartCounterWrapper>
-          <div style={{ position: 'relative' }}>
-            <ImgInCartWrapper
+
+          <ImgInCartWrapper>
+
+            <ImgInCart
               src={product.gallery[currentImageIndex]}
               alt="product"
             />
-            <CartPhotoSliderLeft
-              onClick={this.changeCurrentImageIndex(-1)}
-              type="button"
-            >
-              <img src={leftArrow} alt="leftArrow" style={{ cursor: 'pointer' }} />
-            </CartPhotoSliderLeft>
-            <CartPhotoSliderRight
-              onClick={this.changeCurrentImageIndex(1)}
-              type="button"
-            >
-              <img src={rightArrow} alt="rightArrow" style={{ cursor: 'pointer' }} />
-            </CartPhotoSliderRight>
-          </div>
+            {arrows}
+
+          </ImgInCartWrapper>
         </CartRightColumn>
+
       </CartItemWrapper>
     );
   }

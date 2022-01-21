@@ -5,13 +5,13 @@ import Option from './styled/Option';
 import { client } from '../../queries/client';
 import { CURRENCIES_REQUEST } from '../../queries/queries';
 import { changeCurrency } from '../../store/actions';
-import currencyArrow from '../../assets/currencyArrow.svg';
 import OptionsWrapper from './styled/OptionsWrapper';
+import CurrencyWrapper from './styled/CurrencyWrapper';
+import CurrencyArrow from './styled/CurrencyArrow';
 
 class Currency extends React.Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
     this.state = {
       currencies: [{
         label: 'USD',
@@ -28,6 +28,21 @@ class Currency extends React.Component {
       this.setState({ currencies: data.currencies });
       // eslint-disable-next-line no-console
     }).catch((e) => console.log(e));
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
+  handleClickOutside = (event) => {
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      this.setState({ isSelectOpen: false });
+    }
+  }
+
+  setWrapperRef = (node) => {
+    this.wrapperRef = node;
   }
 
   handleChange = (label, symbol) => () => {
@@ -49,26 +64,15 @@ class Currency extends React.Component {
     } = this.state;
 
     return (
-      <div style={{
-        position: 'relative', display: 'flex', alignItems: 'center',
-      }}
-      >
-        <img
-          style={{
-            width: '10px',
-            height: '10px',
-            right: 0,
-            position: 'absolute',
-            zIndex: -1,
-            transform: `rotate(${isSelectOpen ? 0 : 180}deg)`,
-          }}
-          src={currencyArrow}
-          alt="arrow"
+      <CurrencyWrapper>
+        <CurrencyArrow
+          isSelectOpen={isSelectOpen}
         />
         <Select
           onClick={this.toggleSelect}
           role="button"
           tabIndex={0}
+          ref={this.setWrapperRef}
         >
           {currency.symbol}
           {isSelectOpen
@@ -82,7 +86,7 @@ class Currency extends React.Component {
               </OptionsWrapper>
             )}
         </Select>
-      </div>
+      </CurrencyWrapper>
     );
   }
 }

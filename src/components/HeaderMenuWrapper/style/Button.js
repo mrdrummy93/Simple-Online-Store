@@ -10,7 +10,8 @@ export default styled.button`
   color: ${props => (props.currentCategory === props.category ? '#5ECE7B' : 'black')};
   border: none;
   background: white;
-  padding-right: 30px;
+  padding-right: 10px;
+  padding-left: 10px;
   text-transform: uppercase;
 
   &:hover {

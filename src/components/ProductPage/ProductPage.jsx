@@ -1,21 +1,16 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import ReactHtmlParser from 'react-html-parser';
-import sanitizeHtml from 'sanitize-html';
-import AddToCartButtonInProduct from './style/AddToCartButtonInProduct';
-import DescriptionWrapper from './style/DescriptionWrapper';
 import ImagesWrapper from './style/ImagesWrapper';
 import ProductPageMainImgWrapper from './style/ProductPageMainImgWrapper';
 import ProductPageWrapper from './style/ProductPageWrapper';
-import SizeProductButton from '../CartItemComponent/style/SizeProductButton';
-import { getDefaultAttributesValues, getUniqId, getAmountCurrentCurrency } from '../../helpers';
+import { getDefaultAttributesValues, getUniqId } from '../../helpers';
 import ProductPageMiniImages from './style/ProductPageMiniImages';
 import ProductPageMainImg from './style/ProductPageMainImg';
 import { addToCart } from '../../store/actions';
 import { PRODUCT_REQUEST } from '../../queries/queries';
 import { client } from '../../queries/client';
-import ColorProductButton from '../CartItemComponent/style/ColorProductButton';
+import Description from '../Description/Description';
 
 class ProductPage extends React.Component {
   constructor(props) {
@@ -69,10 +64,13 @@ class ProductPage extends React.Component {
     });
   }
 
+  onMiniImageClick = (image) => () => {
+    this.setState({
+      currentImageSrc: image,
+    });
+  }
+
   render() {
-    const {
-      currency,
-    } = this.props;
     const {
       prices,
       gallery,
@@ -85,101 +83,46 @@ class ProductPage extends React.Component {
       currentImageSrc,
     } = this.state;
     if (!name) return null;
-    const amount = getAmountCurrentCurrency(prices, currency);
-    const html = sanitizeHtml(description);
     return (
       <ProductPageWrapper>
+
         <ImagesWrapper>
           {gallery.map((image) => (
             <ProductPageMiniImages
-              onClick={() => {
-                this.setState({
-                  currentImageSrc: image,
-                });
-              }}
+              onClick={this.onMiniImageClick(image)}
               src={image}
               key={image}
               alt="product"
             />
           ))}
         </ImagesWrapper>
+
         <ProductPageMainImgWrapper>
           <ProductPageMainImg
             src={currentImageSrc}
             alt="product"
           />
         </ProductPageMainImgWrapper>
-        <DescriptionWrapper>
-          <h1>
-            {brand}
-          </h1>
-          <h2>
-            {name}
-          </h2>
-          {attributes.map((attribute) => (
-            <div key={attribute.id}>
-              <h4>
-                {attribute.name}
-                :
-              </h4>
-              <div>
-                {attribute.items.map((attributeItem) => {
-                  const isCurrentAttributeActive = activeAttributes[attribute.id] === attributeItem.value;
-                  return (attribute.id === 'Color'
-                    ? (
-                      <ColorProductButton
-                        key={attributeItem.id}
-                        attributeItem={attributeItem.value}
-                        isCurrentAttributeActive={isCurrentAttributeActive}
-                        onClick={this.handleClick(attribute.id, attributeItem.value)}
-                      />
-                    )
-                    : (
-                      <SizeProductButton
-                        key={attributeItem.id}
-                        isCurrentAttributeActive={isCurrentAttributeActive}
-                        onClick={this.handleClick(attribute.id, attributeItem.value)}
-                      >
-                        {attributeItem.value}
-                      </SizeProductButton>
-                    ));
-                })}
-              </div>
-            </div>
-          ))}
-          <div>
-            <h4>PRICE:</h4>
-            <p><strong>{`${currency.symbol} ${amount}`}</strong></p>
-          </div>
-          {inStock
-            ? (
-              <AddToCartButtonInProduct
-                onClick={this.addToCartHandler}
-              >
-                ADD TO CART
-              </AddToCartButtonInProduct>
-            )
-            : (
-              <AddToCartButtonInProduct>
-                OUT OF STOCK
-              </AddToCartButtonInProduct>
-            )}
-          {/* eslint-disable-next-line react/no-danger */}
-          <div>
-            {ReactHtmlParser(html)}
-          </div>
-        </DescriptionWrapper>
+
+        <Description
+          brand={brand}
+          name={name}
+          inStock={inStock}
+          addToCartHandler={this.addToCartHandler}
+          attributes={attributes}
+          handleClick={this.handleClick}
+          activeAttributes={activeAttributes}
+          prices={prices}
+          description={description}
+        />
+
       </ProductPageWrapper>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  currency: state.data.currency,
-});
-
 const mapDispatchToProps = (dispatch) => ({
   addProductToCart: (product) => dispatch(addToCart(product)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProductPage));
+export default connect(null, mapDispatchToProps)(withRouter(ProductPage));

@@ -6,5 +6,5 @@ export default styled.div`
   width: 30px;
   height: 30px;
   background-size: cover;
-  margin-right: 175px;
+  margin-right: 150px;
 `;
